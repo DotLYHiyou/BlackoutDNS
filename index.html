@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BlackoutDNS</title>
+  <style>body{font-family:sans-serif;max-width:600px;margin:2em auto;}textarea{width:100%;height:8em;}pre{background:#eee;padding:1em;}</style>
+</head>
+<body>
+  <h1>BlackoutDNS WiFi ONC Generator</h1>
+  <p>Paste the text under your WiFi network from <code>chrome://network#state</code>:</p>
+  <textarea id="wifiText" placeholder="Paste WiFi details here..."></textarea>
+  <button onclick="generateONC()">Generate .onc</button>
+  <h2>ONC File</h2>
+  <pre id="oncOutput"></pre>
+  <a id="downloadLink" style="display:none;">Download .onc</a>
+  <script>
+    // Parse WiFi details from pasted text
+    function parseWifiText(text) {
+      // Find SSID, Security, and Passphrase in the text
+      const ssidMatch = text.match(/SSID: ([^\n]+)/);
+      const securityMatch = text.match(/Security: ([^\n]+)/);
+      const passwordMatch = text.match(/Passphrase: ([^\n]+)/);
+      return {
+        ssid: ssidMatch ? ssidMatch[1].trim() : '',
+        security: securityMatch ? securityMatch[1].trim() : '',
+        password: passwordMatch ? passwordMatch[1].trim() : ''
+      };
+    }
+    // Generate the ONC file and show/download it
+    function generateONC() {
+      const text = document.getElementById('wifiText').value; // Get user input
+      const wifi = parseWifiText(text); // Parse WiFi info
+      if (!wifi.ssid) { // If no SSID found, show error
+        document.getElementById('oncOutput').textContent = 'Could not parse SSID.';
+        return;
+      }
+      // Build ONC object
+      const onc = {
+        Type: "UnencryptedConfiguration",
+        NetworkConfigurations: [
+          {
+            GUID: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2), // Unique ID
+            Name: wifi.ssid,
+            Type: "WiFi",
+            WiFi: {
+              SSID: wifi.ssid, // WiFi name
+              Security: wifi.security || "WPA-PSK", // Security type
+              Passphrase: wifi.password || "", // WiFi password
+              NameServers: ["127.0.0.1:2053"] // Use local DNS server
+            }
+          }
+        ]
+      };
+      // Convert ONC object to JSON string
+      const oncStr = JSON.stringify(onc, null, 2);
+      document.getElementById('oncOutput').textContent = oncStr; // Show ONC
+      // Create downloadable file
+      const blob = new Blob([oncStr], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const link = document.getElementById('downloadLink');
+      link.href = url;
+      link.download = 'bdns.onc'; // Always use bdns.onc as the file name
+      link.style.display = 'inline';
+      link.textContent = 'Download bdns.onc';
+    }
+  </script>
+</body>
+</html>
