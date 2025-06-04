@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>BlackoutDNS</title>
-  <style>body{font-family:sans-serif;max-width:600px;margin:2em auto;}textarea{width:100%;height:8em;}pre{background:#eee;padding:1em;}</style>
+  <style>body{font-family:sans-serif;max-width:600px;margin:2em auto;}textarea{width:100%;height:8em;}pre{background:#eee;padding:1em;}#linkCheckNotice{position:fixed;top:10px;right:10px;background:#222;color:#fff;padding:1em 1.5em;border-radius:8px;font-size:0.95em;z-index:1000;max-width:320px;}</style>
 </head>
 <body>
   <h1>BlackoutDNS</h1>
-  <p>Paste the text under your WiFi network from <code>chrome://network#state</code> and follow the instructions from there:</p>
+  <p>Paste the text under your WiFi network from <code>chrome://network#state</code> and follow the instructions from there or else it WILL Break.:</p>
   <button onclick="window.location.href='https://blackoutdns.vercel.app/README.md'" type="button">Instructions</button>
   <textarea id="wifiText" placeholder="Paste WiFi details here..."></textarea>
   <button onclick="generateONC()">Generate .onc</button>
   <h2>ONC File</h2>
   <pre id="oncOutput"></pre>
   <a id="downloadLink" style="display:none;">Download .onc</a>
+  <div id="linkCheckNotice"></div>
   <script>
     // Parse WiFi details from pasted text
     function parseWifiText(text) {
@@ -64,6 +65,18 @@
       link.style.display = 'inline';
       link.textContent = 'Download bdns.onc';
     }
+    // Link check and notice
+    (function() {
+      var host = window.location.host;
+      var notice = document.getElementById('linkCheckNotice');
+      if (host === 'blackoutdns.vercel.app') {
+        notice.textContent = `This link, (${host}) is an official BlackoutDNS link. You are installing a legit .onc file approved by DotLYHiyou, the creator.`;
+        notice.style.background = '#1a7f37'; // green
+      } else {
+        notice.textContent = `This link, (${host}) is not an official link. You may be installing a faulty .onc file, that may screw up your wifi. Instead, go to blackoutdns.vercel.app`;
+        notice.style.background = '#b91c1c'; // red
+      }
+    })();
   </script>
 </body>
 </html>
