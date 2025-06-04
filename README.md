@@ -1,7 +1,8 @@
 ## BLackoutDNS
 
 *Why need a proxy when you have a DNS?* - DotLYHiyou, Creator of this project.
-A DNS server that gets around school firewall restrictions. Support to get around tools such as GoGuardian, CKAuth, or whatever other schools use as restriction tools. idk I only have access to GoGuardian. Built 80% using AI. Probably gonna rework it when I completely learn Javascript to its core and advanced stuff.
+
+This is a simple DNS server that gets around school firewall restrictions. Support to get around tools such as GoGuardian, CKAuth, or whatever other schools use as restriction tools. idk I only have access to GoGuardian. Built 80% using AI. Probably gonna rework it when I completely learn Javascript to its core and advanced stuff.
 
 ## How to use?
 
