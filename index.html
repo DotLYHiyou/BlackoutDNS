@@ -6,8 +6,9 @@
   <style>body{font-family:sans-serif;max-width:600px;margin:2em auto;}textarea{width:100%;height:8em;}pre{background:#eee;padding:1em;}</style>
 </head>
 <body>
-  <h1>BlackoutDNS WiFi ONC Generator</h1>
-  <p>Paste the text under your WiFi network from <code>chrome://network#state</code>:</p>
+  <h1>BlackoutDNS</h1>
+  <p>Paste the text under your WiFi network from <code>chrome://network#state</code> and follow the instructions from there:</p>
+  <button onclick="window.location.href='https://blackoutdns.vercel.app/README.md'" type="button">Instructions</button>
   <textarea id="wifiText" placeholder="Paste WiFi details here..."></textarea>
   <button onclick="generateONC()">Generate .onc</button>
   <h2>ONC File</h2>
